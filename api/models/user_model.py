@@ -1,4 +1,4 @@
-from database import DatabaseConnection
+from ..database import DatabaseConnection
 
 class User:
 
@@ -61,10 +61,10 @@ class User:
     
     @classmethod
     def crear_usuario(cls, user):
-        query = "INSERT INTO discord_db.usuarios (nombre, apellido, username, paswwordd, email, imagen, estado_usuario, rol_usuario, fecha_nacimiento) VALUES (%(nombre)s, %(apellido)s, %(username)s, %(paswwordd)s, %(email)s, %(imagen)s);"
+        query = "INSERT INTO discord_db.usuarios (nombre, apellido, username, paswwordd, email, fecha_nacimiento, imagen) VALUES (%(nombre)s, %(apellido)s, %(username)s, %(paswwordd)s, %(email)s, %(fecha_nacimiento)s, %(imagen)s);"
         params = user.__dict__
-        cursor = DatabaseConnection.execute_query(query, params=params)
-        cursor.close()
+        DatabaseConnection.execute_query(query, params=params)
+
 
     @classmethod
     def modificar_usuario(cls, id_usuario, nombre, apellido, username, passwordd, email, imagen_url):

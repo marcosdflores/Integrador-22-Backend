@@ -1,6 +1,5 @@
-from models.user_model import User
-from flask import templates, request, session
-
+from ..models.user_model import User
+from flask import request, session
 
 class UserController:
 
@@ -33,12 +32,7 @@ class UserController:
         return {"message": "Sesion cerrada"}, 200
     
     @classmethod
-    def ver_usuario(id_usuario):
-        usuario = User.ver_usuario(id_usuario)
-        return templates('profile.html', usuario=usuario)
-    
-    @classmethod
-    def crear_usuario():
+    def crear_usuario(cls):
         data_user = request.json
 
         nuevo_user = User(**data_user)
