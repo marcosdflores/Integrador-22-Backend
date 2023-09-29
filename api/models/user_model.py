@@ -31,7 +31,7 @@ class User:
     @classmethod
     def is_registered(cls, user):
         query = """SELECT id_usuario FROM discord_db.usuarios 
-        WHERE username = %(username)s and passwordd = %(paswwordd)s"""
+        WHERE username = %(username)s and paswwordd = %(paswwordd)s"""
         params = user.__dict__
         result = DatabaseConnection.fetch_one(query, params=params)
 
@@ -41,7 +41,7 @@ class User:
     
     @classmethod
     def get_user(cls, user):
-        query = """SELECT * FROM discord_db.users 
+        query = """SELECT * FROM discord_db.usuarios
         WHERE username = %(username)s"""
         params = user.__dict__
         result = DatabaseConnection.fetch_one(query, params=params)
@@ -62,7 +62,7 @@ class User:
     
     @classmethod
     def crear_usuario(cls, user):
-        query = "INSERT INTO discord_db.usuarios (nombre, apellido, username, paswwordd, email, imagen, fecha_nacimiento,) VALUES (%(nombre)s, %(apellido)s, %(username)s, %(paswwordd)s, %(email)s, %(imagen)s, %(fecha_nacimiento)s);"
+        query = "INSERT INTO discord_db.usuarios (nombre, apellido, username, paswwordd, email, imagen, fecha_nacimiento) VALUES (%(nombre)s, %(apellido)s, %(username)s, %(paswwordd)s, %(email)s, %(imagen)s, %(fecha_nacimiento)s);"
         params = user.__dict__
         DatabaseConnection.execute_query(query, params=params)
 
