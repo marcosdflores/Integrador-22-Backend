@@ -1,5 +1,5 @@
-from models.server_model import ServidorDs
-from flask import templates , request, session
+from ..models.server_model import ServidorDs
+from flask import request, session
 
 
 class ServerController:
@@ -8,10 +8,12 @@ class ServerController:
     def crear_sv(cls):
         data = request.json
         session['nombre_servidor'] = data.get('nombre_servidor')
-        servidor = ServidorDs(**data)
-        if not ServidorDs.sv_registered(servidor):
-            ServidorDs.creat_server(servidor)
-            sv = ServidorDs.get_sv()
-            #Crear datos con tabla intermedia
-            return {'msj':'Server creado'},201
-        return {'msj':'Ocurrio un error'},400
+        servidor = ServidorDs(data.get('nombre_servidor'))
+        ServidorDs.creat_server(servidor)
+        #Crear datos con tabla intermedia
+        return {'msj':'Server creado'},201
+    
+    @classmethod
+    def obtener_servers(cls):
+        servers = ServidorDs.get_servidores()
+        return servers
