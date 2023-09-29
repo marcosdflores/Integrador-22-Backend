@@ -5,20 +5,20 @@ class User:
     def __init__(self, **kwargs):
         self.id_usuario = kwargs.get('id_usuario')
         self.nombre = kwargs.get('nombre')
-        self.apellido  = kwargs.get('apellido ')
+        self.apellido = kwargs.get('apellido')
         self.username = kwargs.get('username')
         self.paswwordd = kwargs.get('paswwordd')
         self.email = kwargs.get('email')
         self.imagen = kwargs.get("imagen")
-        self.estado  = kwargs.get('estado')
-        self.rol  = kwargs.get('rol')
+        self.estado = kwargs.get('estado')
+        self.rol = kwargs.get('rol')
         self.fecha_nacimiento = kwargs.get('fecha_nacimiento')
     
     def serialize(self):
         return {
             "id_usuario": self.id_usuario,
             "nombre": self.nombre,
-            "apellido ": self.apellido,
+            "apellido": self.apellido,
             "username": self.username,
             "paswwordd": self.paswwordd,
             "email": self.email,
@@ -31,7 +31,7 @@ class User:
     @classmethod
     def is_registered(cls, user):
         query = """SELECT id_usuario FROM discord_db.usuarios 
-        WHERE username = %(username)s and passwordd = %(paswword)s"""
+        WHERE username = %(username)s and passwordd = %(paswwordd)s"""
         params = user.__dict__
         result = DatabaseConnection.fetch_one(query, params=params)
 
@@ -52,16 +52,17 @@ class User:
                 nombre = result[1],
                 apellido = result[2],
                 username = result[3],
-                paswword = result[4],
+                paswwordd = result[4],
                 email = result[5],
-                estado_usuario = result[6],
-                rol_usuario = result[7],
-                fecha_nacimiento = result[8])
+                imagen = result[6]
+                estado_usuario = result[7],
+                rol_usuario = result[8],
+                fecha_nacimiento = result[9])
         return None
     
     @classmethod
     def crear_usuario(cls, user):
-        query = "INSERT INTO discord_db.usuarios (nombre, apellido, username, paswwordd, email, fecha_nacimiento, imagen) VALUES (%(nombre)s, %(apellido)s, %(username)s, %(paswwordd)s, %(email)s, %(fecha_nacimiento)s, %(imagen)s);"
+        query = "INSERT INTO discord_db.usuarios (nombre, apellido, username, paswwordd, email, imagen, fecha_nacimiento,) VALUES (%(nombre)s, %(apellido)s, %(username)s, %(paswwordd)s, %(email)s, %(imagen)s, %(fecha_nacimiento)s);"
         params = user.__dict__
         DatabaseConnection.execute_query(query, params=params)
 
