@@ -1,5 +1,5 @@
 from flask import Blueprint
-from exceptions import CustomException, BadRequestError, NotFoundError, ForbiddenError, ServerError
+from ..models.exceptions import CustomException, BadRequestError, NotFoundError, ForbiddenError, ServerError
 
 error_bp = Blueprint("errors", __name__)
 

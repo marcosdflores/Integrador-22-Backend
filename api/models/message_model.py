@@ -1,4 +1,4 @@
-from app.database import DatabaseConnection
+from ..database import DatabaseConnection
 
 class Mensaje:
     def __init__(self, id_mensaje, contenido_mensaje, fecha_envio, fecha_actualizacion, id_usuario, id_canal):

@@ -1,5 +1,5 @@
 from models.server_model import ServidorDs
-from flask import templates , request, session
+from flask import render_template , request, session
 
 
 class ServerController:
