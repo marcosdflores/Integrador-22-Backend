@@ -1,32 +1,24 @@
-from flask import Flask, jsonify
-from models.exceptions import BadRequestError, NotFoundError, ForbiddenError, ServerError
+from flask import Blueprint
+from exceptions import CustomException, BadRequestError, NotFoundError, ForbiddenError, ServerError
 
-app = Flask(__name__)
+error_bp = Blueprint("errors", __name__)
 
-# Manjeador de error para BadRequest (400)
-@app.errorhandler(BadRequestError)
+@error_bp.app_errorhandler(CustomException)
+def handle_custom_exception(error):
+    return error.get_response()
+
+@error_bp.app_errorhandler(400)
 def handle_bad_request(error):
-    response = jsonify({'error': error.message})
-    response.status_code = 400
-    return response
+    return BadRequestError("User with invalid data").get_response()
 
-# Manjeador de error para NotFound (404)
-@app.errorhandler(NotFoundError)
+@error_bp.app_errorhandler(404)
 def handle_not_found(error):
-    response = jsonify({'error': error.message})
-    response.status_code = 404
-    return response
+    return NotFoundError("Resource not found").get_response()
 
-# Manjeador de error para Forbidden (403)
-@app.errorhandler(ForbiddenError)
+@error_bp.app_errorhandler(403)
 def handle_forbidden(error):
-    response = jsonify({'error': error.message})
-    response.status_code = 403
-    return response
+    return ForbiddenError("Permission denied").get_response()
 
-# Manjeador de error para ServerError (500)
-@app.errorhandler(ServerError)
+@error_bp.app_errorhandler(500)
 def handle_server_error(error):
-    response = jsonify({'error': error.message})
-    response.status_code = 500
-    return response
+    return ServerError("Internal server error").get_response()
