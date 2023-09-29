@@ -13,4 +13,4 @@ users_bp = Blueprint('users', __name__)
 
 users_bp.route('/usuarios/crear', methods=['GET', 'POST'])(UserController.crear_usuario)
 users_bp.route('/usuarios/modificar/<int:id_usuario>', methods=['PUT'])(UserController.modificar_usuario)
-users_bp.route('/usuarios/eliminar/<int:id_usuario>',methods=['DELETE'])(UserController.eliminar_usuario)
+users_bp.route('/usuarios/eliminar/<int:id_usuario>',methods=['GET','DELETE'])(UserController.eliminar_usuario)
