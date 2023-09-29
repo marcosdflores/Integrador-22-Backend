@@ -43,7 +43,8 @@ class UserController:
         User.crear_usuario(nuevo_user)
         return ('Usuario creado con éxito'), 201
     
-    def modificar_usuario(id_usuario):
+    @classmethod
+    def modificar_usuario(cls, id_usuario):
         if 'username' in session:
             user = User(username = session['username'])
             user_encontrado = User.get_user(user)
@@ -62,12 +63,15 @@ class UserController:
                     data_actualizada.get("nombre", data_original.nombre),
                     data_actualizada.get("apellido", data_original.apellido),
                     data_actualizada.get("username", data_original.username),
-                    data_actualizada.get("passwordd", data_original.passwordd),
+                    data_actualizada.get("paswwordd", data_original.paswwordd),
                     data_actualizada.get("email", data_original.email),
                     data_actualizada.get("imagen_url", data_original.imagen),
                 ) 
+                return {"message": "Usuario modificado exitosamente"}, 200
+        return {"message": "No tienes permiso para modificar este usuario"}, 401
     
-    def eliminar_usuario(id_usuario):
+    @classmethod
+    def eliminar_usuario(cls, id_usuario):
         usuario = User.ver_usuario(id_usuario)
         if usuario and usuario.id_usuario == session.get('id_usuario'):
             User.eliminar_usuario(id_usuario)
