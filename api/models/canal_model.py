@@ -12,31 +12,38 @@ class Canal:
         return {
             "id_canal": self.id_canal,
             "nombre_canal": self.nombre_canal,
-            "descripcion_canal ": self.descripcion_canal,
-            "fecha_creacion ": self.fecha_creacion
+            "descripcion_canal": self.descripcion_canal,
+            "fecha_creacion": self.fecha_creacion
 
         }
     
     @classmethod
     def crea_canal(cls, nombre, descrp):
-        DatabaseConnection.get_connection()
-        query = 'INSERT INTO canales (nombre_canal, descripcion_canal, fecha_creacion) VALUES (%s,%s, CURRENT_TIMESTAMP)'
-        pmts = (nombre, descrp)
-        DatabaseConnection.execute_query(query, pmts)
-        DatabaseConnection.close_connection()
+        conn = DatabaseConnection.get_connection()  
+        query = 'INSERT INTO canales (nombre_canal, descripcion_canal, fecha_creacion) VALUES (%s, %s, CURRENT_TIMESTAMP)'
+        pmts = (nombre, descrp)  
+        DatabaseConnection.execute_query(conn, query, pmts)  
+        DatabaseConnection.close_connection(conn)
 
     @classmethod
     def get_canal(cls, id_canal):
-        DatabaseConnection.get_connection()
+        conn = DatabaseConnection.get_connection()  
         qry = 'SELECT * FROM canales WHERE id_canal = %s'
-        DatabaseConnection.execute_query(qry, id_canal)
-        DatabaseConnection.close_connection()
+        params = (id_canal,)  
+        result = DatabaseConnection.execute_query(conn, qry, params) 
+        DatabaseConnection.close_connection(conn)  
+
 
 
     @classmethod
     def verify_canal(cls, nombre):
-        estado = True
+        conn = DatabaseConnection.get_connection()  
+        qry = 'SELECT COUNT(*) FROM canales WHERE nombre_canal = %s'
+        params = (nombre,)  
+        result = DatabaseConnection.execute_query(conn, qry, params) 
+        DatabaseConnection.close_connection(conn)  
+
         
-        return estado
-    
-    #Revisar
+        if result[0][0] > 0:
+            return True
+        return False
