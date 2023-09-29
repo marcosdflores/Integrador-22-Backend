@@ -1,6 +1,5 @@
 from ..models.user_model import User
 from flask import request, session
-from models.exceptions import BadRequestError, NotFoundError, ForbiddenError, ServerError
 
 
 
@@ -18,15 +17,15 @@ class UserController:
             session['username'] = data.get('username')
             return {"message": "Sesion iniciada"}, 200
         else:
-            raise BadRequestError("Usuario o contraseña incorrectos"), 400
-            
+            return {"message": "Usuario o contraseña incorrectos"}, 401
 
+            
     @classmethod
     def show_profile(cls):
         username = session.get('username')
         user = User.get_user(User(username = username))
         if user is None:
-            raise NotFoundError("Usuario no encontrado"), 404
+            return {"message": "Usuario no encontrado"}, 404
         else:
             return user.serialize(), 200
     
@@ -42,7 +41,7 @@ class UserController:
         nuevo_user = User(**data_user)
 
         User.crear_usuario(nuevo_user)
-        return ('Usuario creado con éxito'), 200
+        return ('Usuario creado con éxito'), 201
     
     def modificar_usuario(id_usuario):
         if 'username' in session:
@@ -74,4 +73,4 @@ class UserController:
             User.eliminar_usuario(id_usuario)
             return('Usuario eliminado con éxito'),200
         else:
-            raise ForbiddenError("No tienes permisos para realizar esta acción"),403
+            return('No tienes permiso para eliminar este usuario'), 401
