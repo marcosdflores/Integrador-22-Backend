@@ -54,7 +54,7 @@ class User:
                 username = result[3],
                 paswwordd = result[4],
                 email = result[5],
-                imagen = result[6]
+                imagen = result[6],
                 estado_usuario = result[7],
                 rol_usuario = result[8],
                 fecha_nacimiento = result[9])
