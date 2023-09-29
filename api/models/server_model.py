@@ -11,43 +11,43 @@ class ServidorDs:
         return {
             "id_servidor": self.id_servidor,
             "nombre_servidor": self.nombre_servidor,
-            "fecha_creacion ": self.fecha_creacion
+            "fecha_creacion": self.fecha_creacion
         }
     
     @classmethod
     def creat_server(cls, nombre):
-        DatabaseConnection.get_connection()
+        conn = DatabaseConnection.get_connection()  
         query = "INSERT INTO servidores (nombre_servidor, fecha_creacion) VALUES (%s, CURRENT_TIMESTAMP)"
-        pmts = (nombre)
-        DatabaseConnection.execute_query(query, pmts)
-        DatabaseConnection.close_connection()
-    
+        params = (nombre,)  
+        DatabaseConnection.execute_query(conn, query, params)  
+        DatabaseConnection.close_connection(conn)  
+
     @classmethod
     def delete_sv(cls, id_sv):
-        DatabaseConnection.get_connection()
+        conn = DatabaseConnection.get_connection()  # Obtener la conexión
         qry = "DELETE FROM servidores WHERE id_servidor = %s"
-        parameters = (id_sv,)
-        DatabaseConnection.execute_query(qry, parameters)
-        DatabaseConnection.close_connection()
+        params = (id_sv,)  # Debe ser una tupla
+        DatabaseConnection.execute_query(conn, qry, params)  # Pasar la conexión a execute_query
+        DatabaseConnection.close_connection(conn)  # Cerrar la conexión
     
     @classmethod
     def sv_registered(cls, srver):
-        qry = """SELECT * FROM discord_db.servidores 
-        WHERE nombre_servidor = %(nombre_servidor)s"""
-        parametros = srver.__dict__
-        DatabaseConnection.get_connection()
-        resultad = DatabaseConnection.fetch_one(qry, params=parametros)
-        DatabaseConnection.close_connection()
+        qry = "SELECT * FROM servidores WHERE nombre_servidor = %s"
+        params = (srver.nombre_servidor,)  
+        conn = DatabaseConnection.get_connection()  
+        result = DatabaseConnection.fetch_one(conn, qry, params=params) 
+        DatabaseConnection.close_connection(conn) 
 
-        if resultad is not None:
+        if result is not None:
             return True
         return False
 
+    @classmethod
     def get_sv(cls, nombre_servidor):
-        qry = """SELECT id_servidor FROM discord_db.servidores 
-        WHERE nombre_servidor = %s"""
-        DatabaseConnection.get_connection()
-        resultad = DatabaseConnection.fetch_one(qry, params=nombre_servidor)
-        DatabaseConnection.close_connection()
-
-        #Revisar get_sv
+        qry = "SELECT id_servidor FROM servidores WHERE nombre_servidor = %s"
+        params = (nombre_servidor,)  
+        conn = DatabaseConnection.get_connection()  
+        result = DatabaseConnection.fetch_one(conn, qry, params=params)  
+        DatabaseConnection.close_connection(conn)  
+    
+    
